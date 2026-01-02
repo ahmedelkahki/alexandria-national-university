@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+  <meta charset="UTF-8">
+  <title>نتيجةالفرقه الثالثه </title>
+</head>
+<style>
+  body {
+    font-family: "Arial", sans-serif;
+    background-color: #f5f5f5;
+    text-align: center;
+    margin: 0;
+    padding: 0;
+  }
+
+  .header {
+    background-color: #003366;
+    color: #fff;
+    padding: 20px 0;
+    margin-bottom: 30px;
+  }
+
+  .header img {
+    width: 80px;
+    vertical-align: middle;
+    margin-right: 10px;
+  }
+
+  .header h1 {
+    display: inline;
+    font-size: 28px;
+    vertical-align: middle;
+  }
+  h3 {color:#003366;
+  margin-bottom: 20px ;
+}
+
+  input {
+    padding: 10px;
+    margin: 5px;
+    width: 200px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    outline: none;
+  }
+
+  button {
+    padding: 10px 20px;
+    margin: 10px;
+    background-color: #003366;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-weight: bold;
+  }
+
+  button:hover {
+    background-color: #0059b3;
+  }
+
+  #result {
+    background-color: #fff;
+    display: inline-block;
+    padding: 20px;
+    margin-top: 20px;
+    border-radius: 10px;
+    text-align: left;
+    min-width: 300px;
+    box-shadow: 0 0 10px rgba(0,0,0,0.1);
+  }
+#result table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 10px;
+    }
+
+    #result th, #result td {
+      border: 1px solid #ccc;
+      padding: 8px;
+      text-align: center;
+    }
+
+    #result th {
+      background-color: #003366;
+      color: #fff;
+    }
+
+    @media screen and (max-width: 500px) {
+      input {
+        width: 90%;
+      }
+      #result {
+        width: 90%;
+    }
+  }
+</style>
+
+<body>
+
+ <div class="header">
+  <img src="Images/IMG_2439.PNG" alt="لوجو الجامعة" width="120">
+  <h1>جامعة اسكندرية الاهلية</h1>
+</div>
+  <h3>الاستعلام عن النتيجة</h3>
+
+  <input type="text" id="seatNumber" placeholder="رقم الجلوس">
+  <input type="text" id="nationalId" placeholder="الرقم القومي">
+  <button onclick="getResult()">عرض النتيجة</button>
+
+  <div id="result" style="margin-top:20px;"></div>
+
+  <script>
+    const universityName = "جامعة اسكندرية الاهلية";
+const collegeName = "كلية الحاسبات وعلوم البيانات";
+
+    const results = {
+      "2305027": {
+        name: "أحمد حسين محمد عزت",
+        nationalId: "30503291200776",
+        subjects: {
+          "Mobile Programming": 94,
+          "Linear Algebra": 92,
+          "Probability and Statistics II": 92,
+          "Math 1": 90,
+          "Computer Networks": 95
+        }
+      }
+    };
+
+    function getResult() {
+      const seat = document.getElementById("seatNumber").value;
+      const nationalId = document.getElementById("nationalId").value;
+      const resultDiv = document.getElementById("result");
+
+      if (!results[seat]) {
+        resultDiv.innerHTML = "رقم الجلوس غير موجود ❌";
+        return;
+      }
+      if (results[seat].nationalId !== nationalId) {
+    resultDiv.innerHTML = "الرقم القومي غير مطابق ❌";
+    return;
+  }
+
+      const student = results[seat];
+      let total = 0;
+      let subjectsHTML = "";
+
+      for (let subject in student.subjects) {
+        total += student.subjects[subject];
+        subjectsHTML += `<p>${subject}: ${student.subjects[subject]}</p>`;
+      }
+
+      let grade = "راسب";
+      if (total >= 450) grade = "A";
+      else if (total >= 400) grade = "B";
+      else if (total >= 350) grade ="C";
+      else if (total >= 300) grade = "D";
+
+      resultDiv.innerHTML = `
+        <hr>
+        <p><strong>الجامعة:</strong> ${universityName}</p>
+<p><strong>الكلية:</strong> ${collegeName}</p>
+        <p><strong>الاسم:</strong> ${student.name}</p>
+        <p><strong>رقم الجلوس:</strong> ${seat}</p>
+        <h4>الدرجات:</h4>
+        ${subjectsHTML}
+        <p><strong>المجموع:</strong> ${total} / 500</p>
+        <p><strong>التقدير:</strong> ${grade}</p>
+      `;
+    }
+  </script>
+
+</body>
+</html>
